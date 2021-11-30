@@ -1,0 +1,6 @@
+## project init:
+mkdir -p app/static
+mkdir -p app/media
+mkdir -p app/templates
+docker-compose build --build-arg UID=$(id -u) --build-arg GID=$(id -g) app
+docker-compose run app sh -c "django-admin startproject config ."

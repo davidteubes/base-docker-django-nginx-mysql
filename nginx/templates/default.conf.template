@@ -1,0 +1,25 @@
+## pass requests to app server:port
+upstream app {
+    server app:${DJANGO_PORT};
+}
+
+server {
+
+    listen ${NGINX_PORT}; ## default is port 80
+    server_name ${NGINX_SERVER_NAME};
+
+    ## Django app
+    location /static/ {
+        alias /static/;
+    }
+    location /media/ {
+        alias /media/;
+    }
+    location ^~ ${FORCE_SCRIPT_NAME} {
+        proxy_pass http://app/;
+        #proxy_set_header X-Real-IP $remote_addr;
+        #proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        #proxy_set_header Host $http_host;
+        #proxy_redirect default;
+    }
+}

@@ -1,0 +1,5 @@
+django~=3.2
+mysqlclient
+djangorestframework~=3.12
+six~=1.16
+django-crispy-forms~=1.13
