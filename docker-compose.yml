@@ -13,9 +13,7 @@ services:
       - ./app/media:/media/:ro
       - ./nginx/templates:/etc/nginx/templates
     networks: 
-      frontend:
-        aliases:
-          - lavendergrove-nginx
+      - frontend
     environment: 
       - NGINX_ENVSUBST_TEMPLATE_DIR=/etc/nginx/templates
       - NGINX_ENVSUBST_TEMPLATE_SUFFIX=.template
@@ -34,9 +32,7 @@ services:
       context: .
     env_file: .env
     networks:
-      frontend:
-        aliases:
-          - lavendergrove-app
+      - frontend
     environment: 
       - DEBUG=${DEBUG}
       - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}

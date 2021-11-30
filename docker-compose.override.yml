@@ -19,9 +19,7 @@ services:
       - ./app/static:/static/:ro
       - ./app/media:/media/:ro
     networks:
-      frontend:
-        aliases:
-          - nginx
+      - frontend
     expose:
       - "${NGINX_PORT}"
     environment: 
@@ -32,6 +30,7 @@ services:
       - NGINX_SERVER_NAME=${NGINX_SERVER_NAME}
       - DJANGO_PORT=${DJANGO_PORT}
       - DJANGO_APP_ROOT=${DJANGO_APP_ROOT}
+      - DJANGO_HOST=${DJANGO_HOST}
       - FORCE_SCRIPT_NAME=${FORCE_SCRIPT_NAME}
     restart: "on-failure"
     depends_on: 
@@ -80,7 +79,8 @@ services:
   db:
     image: mysql:5.7
     environment: 
-      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+      - MYSQL_ALLOW_EMPTY_PASSWORD=0
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
@@ -88,9 +88,7 @@ services:
     volumes: 
       - data:/var/lib/mysql
     networks: 
-      backend:
-        aliases:
-          - db
+      - backend
     restart: "unless-stopped"
     # logging: 
     #   driver: syslog
