@@ -1,8 +1,5 @@
 version: "3.9"
 
-volumes: 
-  data:
-
 networks: 
   frontend:
     external: true
@@ -19,7 +16,9 @@ services:
       - ./app/static:/static/:ro
       - ./app/media:/media/:ro
     networks:
-      - frontend
+      frontend:
+        aliases:
+          - nginx
     expose:
       - "${NGINX_PORT}"
     environment: 
@@ -28,9 +27,8 @@ services:
       - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/conf.d
       - NGINX_PORT=80
       - NGINX_SERVER_NAME=${NGINX_SERVER_NAME}
-      - DJANGO_PORT=${DJANGO_PORT}
-      - DJANGO_APP_ROOT=${DJANGO_APP_ROOT}
       - DJANGO_HOST=${DJANGO_HOST}
+      - DJANGO_PORT=${DJANGO_PORT}
       - FORCE_SCRIPT_NAME=${FORCE_SCRIPT_NAME}
     restart: "on-failure"
     depends_on: 
@@ -86,9 +84,11 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     env_file: .env
     volumes: 
-      - data:/var/lib/mysql
-    networks: 
-      - backend
+      - ./data/mysql:/var/lib/mysql
+    networks:
+      backend:
+        aliases:
+          - db
     restart: "unless-stopped"
     # logging: 
     #   driver: syslog

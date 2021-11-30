@@ -14,15 +14,6 @@ services:
       - ./nginx/templates:/etc/nginx/templates
     networks: 
       - frontend
-    environment: 
-      - NGINX_ENVSUBST_TEMPLATE_DIR=/etc/nginx/templates
-      - NGINX_ENVSUBST_TEMPLATE_SUFFIX=.template
-      - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/conf.d
-      - NGINX_PORT=80
-      - NGINX_SERVER_NAME=${NGINX_SERVER_NAME}
-      - DJANGO_PORT=${DJANGO_PORT}
-      - DJANGO_APP_ROOT=${DJANGO_APP_ROOT}
-      - FORCE_SCRIPT_NAME=${FORCE_SCRIPT_NAME}
     restart: "on-failure"
     depends_on: 
       - app
@@ -33,13 +24,4 @@ services:
     env_file: .env
     networks:
       - frontend
-    environment: 
-      - DEBUG=${DEBUG}
-      - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_HOST=${MYSQL_HOST}
-      - MYSQL_PORT=${MYSQL_PORT}
-      # - FORCE_SCRIPT_NAME=${FORCE_SCRIPT_NAME}
     restart: "on-failure"
